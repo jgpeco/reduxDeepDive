@@ -1,4 +1,7 @@
 import counterReducer from './counterReducer'
+import '@testing-library/jest-dom/extend-expect'
+import { fireEvent } from '@testing-library/react'
+
 
 const incrementAction = { type: 'INCREMENT' }
 const decrementAction = { type: 'DECREMENT' }
@@ -39,8 +42,23 @@ test(`If called with an action that doesn't pertain to the reducer, returns the 
 test(`If called with undefined, should return the initial state`, () => {
     let currentState = undefined
     let initialState = 0
+
     expect(
         counterReducer(currentState, {})
     ).toEqual(initialState)
+    
+})
+
+describe('UI Testing', () => {
+    const container = document.body
+
+    test('When rendered, body should display the initialState (0)', () => {
+        expect(container.innerText).toEqual(0)
+    })
+
+    test('When clicked, listener should be triggered and store should update the state of the app', () => {
+        fireEvent.click(container)
+        expect(container.innerText).toEqual(1)
+    })
 })
 

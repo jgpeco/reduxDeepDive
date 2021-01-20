@@ -1,3 +1,5 @@
+// import { createStore } from 'redux'
+
 const counterReducer = (state = 0, action) => {
     switch(action.type){
         case 'INCREMENT':
@@ -8,5 +10,41 @@ const counterReducer = (state = 0, action) => {
             return state
     }
 }
+
+const createStore = (reducer) => {
+    let state
+    let listeners = []
+
+    const getState = () => state
+
+    const dispatch = (action) => {
+        state = reducer(state, action)
+        listeners.forEach(listener => listener())
+    }
+
+    const subscribe = (listener) => {
+        listeners.push(listener)
+        return () => {
+            listeners = listeners.filter(l => l !== listener)
+        }
+    }
+    
+    dispatch({})
+
+    return { getState, dispatch, subscribe }
+}
+
+export const store = createStore(counterReducer)
+
+const render = () => {
+    document.body.innerText = store.getState()
+}
+
+store.subscribe(render)
+render()
+
+document.addEventListener('click', () => {
+    store.dispatch({ type: 'INCREMENT' })
+})
 
 export default counterReducer
