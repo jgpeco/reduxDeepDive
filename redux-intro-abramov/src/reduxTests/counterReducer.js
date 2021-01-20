@@ -36,15 +36,4 @@ const createStore = (reducer) => {
 
 export const store = createStore(counterReducer)
 
-const render = () => {
-    document.body.innerText = store.getState()
-}
-
-store.subscribe(render)
-render()
-
-document.addEventListener('click', () => {
-    store.dispatch({ type: 'INCREMENT' })
-})
-
 export default counterReducer
