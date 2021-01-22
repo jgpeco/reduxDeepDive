@@ -9,6 +9,8 @@ const todoReducer = (state = [], action) => {
                     completed: false
                 }
             ]
+        case 'TOGGLE_TODO':
+            return state.map(todo => todo.id !== action.id ? todo : { ...todo, completed: !todo.completed })
         default:
             return state
     }
