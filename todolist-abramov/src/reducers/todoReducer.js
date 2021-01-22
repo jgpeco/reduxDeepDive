@@ -1,4 +1,4 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore } from 'redux'
 
 const todos = (state = [], action) => {
     switch(action.type) {
@@ -30,6 +30,19 @@ const visibilityFilter = (
     }
 }
 
+// combineReducers skeleton
+
+const combineReducers = (reducers) => {
+    return (state = {}, action) => {
+        return Object.keys(reducers).reduce(
+            (nextState, key) => {
+                nextState[key] = reducers[key](state[key], action)
+                return nextState
+            }, {}
+        )
+    }
+}
+
 const todoApp = combineReducers({
     todos,
     visibilityFilter  
@@ -38,3 +51,4 @@ const todoApp = combineReducers({
 export const store = createStore(todoApp)
 
 export default todoApp
+
